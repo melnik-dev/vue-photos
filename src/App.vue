@@ -12,14 +12,9 @@
       <input class="search-input" placeholder="Поиск по названию" />
     </div>
     <div class="content">
-      <photoCollection
-          :name="`Путешествие по миру`"
-          :images="[
-      'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fGNpdHl8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-      'https://images.unsplash.com/photo-1560840067-ddcaeb7831d2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDB8fGNpdHl8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-      'https://images.unsplash.com/photo-1531219572328-a0171b4448a3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzl8fGNpdHl8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-      'https://images.unsplash.com/photo-1573108724029-4c46571d6490?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzR8fGNpdHl8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-      ]"
+      <photoCollection v-for="(collection, i) in data.collections" :key="i"
+          :name="collection.name"
+          :images="collection.photos"
       />
     </div>
     <ul class="pagination">
@@ -31,12 +26,22 @@
 </template>
 
 <script>
-import photoCollection from './components/photoCollection.vue'
+import photoCollection from './components/photoCollection.vue';
+import data from './data.js';
 
 export default {
   name: 'App',
   components: {
     photoCollection
+  },
+  data() {
+    return {
+      data: data
+    }
+  },
+
+  created() {
+    console.log(data);
   }
 }
 </script>

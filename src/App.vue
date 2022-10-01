@@ -3,11 +3,13 @@
     <h1>Моя коллекция фотографий</h1>
     <div class="top">
       <ul class="tags">
-        <li class="active">Все</li>
-        <li>Горы</li>
-        <li>Море</li>
-        <li>Архитектура</li>
-        <li>Города</li>
+        <li
+            v-for="(cat, i) in categories"
+            :key="i"
+            :class="categoryId === i ? 'active' : '' "
+            @click="categoryId = i"
+        >{{ cat.name }}
+        </li>
       </ul>
       <input v-model="searchValue"
              class="search-input"
@@ -40,16 +42,24 @@ export default {
   },
   data() {
     return {
-      data: data,
-      searchValue: ''
+      categories: data.categories,
+      collections: data.collections,
+      searchValue: '',
+      categoryId: 0
     }
   },
   computed: {
     filterCollections() {
-      return this.data.collections.filter(obj=> {
+      if(!this.categoryId) {
+      return this.collections.filter(obj => {
         return obj.name.toLowerCase().includes(this.searchValue.toLowerCase());
-      })
-    }
+      })}
+
+      return this.collections.filter(obj => {
+          return obj.category === this.categoryId;
+        }).filter(obj => {
+        return obj.name.toLowerCase().includes(this.searchValue.toLowerCase());
+      })}
   },
   created() {
     console.log(data);

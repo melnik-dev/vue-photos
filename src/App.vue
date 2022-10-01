@@ -9,10 +9,14 @@
         <li>Архитектура</li>
         <li>Города</li>
       </ul>
-      <input class="search-input" placeholder="Поиск по названию" />
+      <input v-model="searchValue"
+             class="search-input"
+             placeholder="Поиск по названию"/>
     </div>
     <div class="content">
-      <photoCollection v-for="(collection, i) in data.collections" :key="i"
+      <photoCollection
+          v-for="(collection, i) in filterCollections"
+          :key="i"
           :name="collection.name"
           :images="collection.photos"
       />
@@ -36,10 +40,17 @@ export default {
   },
   data() {
     return {
-      data: data
+      data: data,
+      searchValue: ''
     }
   },
-
+  computed: {
+    filterCollections() {
+      return this.data.collections.filter(obj=> {
+        return obj.name.toLowerCase().includes(this.searchValue.toLowerCase());
+      })
+    }
+  },
   created() {
     console.log(data);
   }

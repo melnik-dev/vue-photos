@@ -13,7 +13,16 @@
 <script>
 export default {
   name: "photoCollection",
-  props: ["name", "images"]
+  props: {
+    name: {
+      type: String,
+      require: false
+    },
+    images: {
+      type: Array,
+      require: false
+    }
+  }
 }
 </script>
 

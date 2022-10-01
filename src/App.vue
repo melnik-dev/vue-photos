@@ -24,9 +24,11 @@
       />
     </div>
     <ul class="pagination">
-      <li>1</li>
-      <li class="active">2</li>
-      <li>3</li>
+      <li v-for="n in pageCount"
+          :key="n"
+          @click="page = n"
+          :class="n === page ? 'active' : '' ">{{ n }}
+      </li>
     </ul>
   </div>
 </template>
@@ -45,24 +47,37 @@ export default {
       categories: data.categories,
       collections: data.collections,
       searchValue: '',
-      categoryId: 0
+      categoryId: 0,
+
+      page: 1
+      // pageCount: 1
     }
   },
   computed: {
     filterCollections() {
-      if(!this.categoryId) {
-      return this.collections.filter(obj => {
-        return obj.name.toLowerCase().includes(this.searchValue.toLowerCase());
-      })}
+      const start = (this.page - 1) * 3;
+      const end = this.page * 3;
+
+      if (!this.categoryId) {
+        return this.collections.filter(obj => {
+          return obj.name.toLowerCase().includes(this.searchValue.toLowerCase());
+        }).slice(start, end);
+      }
 
       return this.collections.filter(obj => {
-          return obj.category === this.categoryId;
-        }).filter(obj => {
-        return obj.name.toLowerCase().includes(this.searchValue.toLowerCase());
-      })}
+            return obj.category === this.categoryId;
+          }).filter(obj => {
+            return obj.name.toLowerCase().includes(this.searchValue.toLowerCase());
+          }).slice(start, end);
+    },
+    pageCount() {
+      return Math.ceil(this.collections.length / 3);
+    },
   },
-  created() {
-    console.log(data);
+  watch: {
+    page() {
+      console.log("page")
+    }
   }
 }
 </script>
